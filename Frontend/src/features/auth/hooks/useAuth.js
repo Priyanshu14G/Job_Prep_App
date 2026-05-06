@@ -7,6 +7,21 @@ export const useAuth = () => {
     const context = useContext(AuthContext);
     const { user, loading, setUser, setLoading } = context;
 
+    useEffect(() => {
+        const getAndSetUser = async () => {
+            try {
+                const data = await getMe();
+                setUser(data.user);
+                setLoading(false);
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        getAndSetUser();
+    }, []);
+
     const handleRegister = async ({ username, email, password }) => {
         setLoading(true);
         try {
@@ -55,20 +70,7 @@ export const useAuth = () => {
         }
     }
 
-    useEffect(() => {
-        const getAndSetUser = async () => {
-            try {
-                const data = await getMe();
-                setUser(data.user);
-                setLoading(false);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        getAndSetUser();
-    }, []);
+    
 
 
     return {
