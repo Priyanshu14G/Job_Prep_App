@@ -50,13 +50,11 @@ async function generateInterViewReportController(req, res) {
     });
   } catch (error) {
     console.error("AI Generation Error: ", error);
-    res
-      .status(503)
-      .json({
-        message:
-          "Failed to generate report from AI due to high traffic length. Please try again soon.",
-        error: error.message,
-      });
+    res.status(503).json({
+      message:
+        "Failed to generate report from AI due to high traffic length. Please try again soon.",
+      error: error.message,
+    });
   }
 }
 
@@ -115,7 +113,11 @@ async function generateResumePdfController(req, res) {
     });
   }
 
-  const { resume, jobDescription, selfDescription } = interviewReport;
+  const {
+    Resume: resume,
+    JobDescription: jobDescription,
+    SelfDescription: selfDescription,
+  } = interviewReport;
 
   const pdfBuffer = await generateResumePdf({
     resume,
