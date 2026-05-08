@@ -79,8 +79,8 @@ const Interview = () => {
     }
 
     const scoreColor =
-        report.matchScore >= 80 ? 'score--high' :
-            report.matchScore >= 60 ? 'score--mid' : 'score--low'
+        report.matchscore >= 80 ? 'score--high' :
+            report.matchscore >= 60 ? 'score--mid' : 'score--low'
 
 
     return (
@@ -118,10 +118,10 @@ const Interview = () => {
                         <section>
                             <div className='content-header'>
                                 <h2>Technical Questions</h2>
-                                <span className='content-header__count'>{report.technicalQuestions.length} questions</span>
+                                <span className='content-header__count'>{(report.technicalQuestions ?? []).length} questions</span>
                             </div>
                             <div className='q-list'>
-                                {report.technicalQuestions.map((q, i) => (
+                                {(report.technicalQuestions ?? []).map((q, i) => (
                                     <QuestionCard key={i} item={q} index={i} />
                                 ))}
                             </div>
@@ -132,10 +132,10 @@ const Interview = () => {
                         <section>
                             <div className='content-header'>
                                 <h2>Behavioral Questions</h2>
-                                <span className='content-header__count'>{report.behavioralQuestions.length} questions</span>
+                                <span className='content-header__count'>{(report.behaviorQuestions ?? []).length} questions</span>
                             </div>
                             <div className='q-list'>
-                                {report.behavioralQuestions.map((q, i) => (
+                                {(report.behaviorQuestions ?? []).map((q, i) => (
                                     <QuestionCard key={i} item={q} index={i} />
                                 ))}
                             </div>
@@ -146,10 +146,10 @@ const Interview = () => {
                         <section>
                             <div className='content-header'>
                                 <h2>Preparation Road Map</h2>
-                                <span className='content-header__count'>{report.preparationPlan.length}-day plan</span>
+                                <span className='content-header__count'>{(report.preparationPlan ?? []).length}-day plan</span>
                             </div>
                             <div className='roadmap-list'>
-                                {report.preparationPlan.map((day) => (
+                                {(report.preparationPlan ?? []).map((day) => (
                                     <RoadMapDay key={day.day} day={day} />
                                 ))}
                             </div>
@@ -166,7 +166,7 @@ const Interview = () => {
                     <div className='match-score'>
                         <p className='match-score__label'>Match Score</p>
                         <div className={`match-score__ring ${scoreColor}`}>
-                            <span className='match-score__value'>{report.matchScore}</span>
+                            <span className='match-score__value'>{report.matchscore}</span>
                             <span className='match-score__pct'>%</span>
                         </div>
                         <p className='match-score__sub'>Strong match for this role</p>

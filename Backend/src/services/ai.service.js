@@ -98,10 +98,37 @@ async function generateInterviewReport({
   selfDescription,
   jobDescription,
 }) {
-  const prompt = `Generate an interview report for a candidate with the following details:
-                        Resume: ${resume}
-                        Self Description: ${selfDescription}
-                        Job Description: ${jobDescription}
+  const prompt = `You are an expert technical interviewer and recruiter. Generate a comprehensive interview report for a candidate.
+
+Resume: ${resume}
+Self Description: ${selfDescription}
+Job Description: ${jobDescription}
+
+CRITICAL INSTRUCTIONS:
+- You MUST generate exactly 5 technical questions.
+- You MUST generate exactly 3 behavioral questions.
+- You MUST identify exactly 3 skill gaps.
+- You MUST generate a 7-day preparation plan (7 items in the array).
+- DO NOT return empty arrays for any property. Provide detailed, high-quality answers.
+- ABSOLUTELY DO NOT USE XML OR HTML TAGS. THE ARRAYS MUST CONTAIN JSON OBJECTS ONLY.
+
+You MUST return a raw JSON object string matching this exact structure:
+{
+  "matchScore": 85,
+  "technicalQuestions": [
+    { "question": "What is React?", "intention": "Check knowledge", "answer": "A UI library" }
+  ],
+  "behavioralQuestions": [
+    { "question": "Tell me about a time...", "intention": "Check conflict resolution", "answer": "Talked to manager" }
+  ],
+  "skillGaps": [
+    { "skill": "AWS", "severity": "medium" }
+  ],
+  "preparationPlan": [
+    { "day": 1, "focus": "System Design", "tasks": ["Read a book"] }
+  ],
+  "title": "Software Engineer Interview Report"
+}
 `;
 
   let retries = 3;
@@ -110,11 +137,10 @@ async function generateInterviewReport({
   while (retries > 0) {
     try {
       const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
+        model: "gemini-3.1-flash-lite",
         contents: prompt,
         config: {
           responseMimeType: "application/json",
-          responseSchema: zodToJsonSchema(interviewReportSchema),
         },
       });
 
@@ -174,7 +200,7 @@ async function generateResumePdf({ resume, selfDescription, jobDescription }) {
                     `;
 
   const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
+    model: "gemini-3.1-flash-lite",
     contents: prompt,
     config: {
       responseMimeType: "application/json",
